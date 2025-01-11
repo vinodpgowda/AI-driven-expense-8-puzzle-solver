@@ -43,7 +43,7 @@ The project follows a standard Maven structure:
 ### Steps
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/AI-driven-expense-8-puzzle.git
+    git clone https://github.com/vinodpgowda/AI-driven-expense-8-puzzle.git
     cd AI-driven-expense-8-puzzle
     ```
 
@@ -62,12 +62,12 @@ The project follows a standard Maven structure:
 
 Run the solver from the command line:
 ```bash
-java -jar AI-driven-expense-8-puzzle.jar <start-file> <goal-file> <method> <dump-flag>
+java -jar expense-8-puzzle.jar <start-file> <goal-file> <method> <dump-flag>
 ```
 
 Example:
 ```bash
-java -jar AI-driven-expense-8-puzzle.jar start.txt goal.txt a* true
+java -jar expense-8-puzzle.jar start.txt goal.txt a* true
 ```
 This runs the solver using the A* algorithm with search trace dumping enabled.  
 
