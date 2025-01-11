@@ -6,14 +6,6 @@ This project implements a solver for a modified version of the 8-puzzle problem,
 
 The solver leverages **AI search algorithms** to efficiently explore the state space and supports multiple methods, including **uninformed** and **informed search techniques**.
 
-Supported search methods:
-- **Breadth-First Search (BFS)**
-- **Uniform Cost Search (UCS)**
-- **Depth-First Search (DFS)**
-- **Depth-Limited Search (DLS)**
-- **Iterative Deepening Search (IDS)**
-- **Greedy Search**
-- **A\*** (default option)
 
 ## Key Features
 
@@ -22,6 +14,17 @@ Supported search methods:
 - Tracks search performance, including nodes expanded and fringe size.
 - Modular design, supporting future algorithm extensions.
 
+
+## Supported search methods:
+- **Breadth-First Search (BFS)** : Explores all nodes at the current depth before moving deeper.
+- **Uniform Cost Search (UCS)** : Explores the lowest-cost path first.
+- **Depth-First Search (DFS)** : Explores as far as possible before backtracking.
+- **Depth-Limited Search (DLS)** : DFS with a depth limit.
+- **Iterative Deepening Search (IDS)** : Gradually increases depth limits.
+- **Greedy Search** : Prioritizes nodes based on a heuristic.
+- **A\*** (default option) : Combines path cost and heuristic for optimal results.  
+
+    
 ## Project Structure
 
 The project follows a standard Maven structure:
@@ -32,6 +35,7 @@ The project follows a standard Maven structure:
 - **Java**: Core language for implementation.
 - **Maven**: For dependency management.
 - **JUnit**: For testing and validation.
+
 
 ## Installation and Setup
 
@@ -58,6 +62,7 @@ The project follows a standard Maven structure:
 4. Run the solver:
     - Execute the `Expense8PuzzleSolver` class with appropriate arguments.
 
+
 ## Usage
 
 Run the solver from the command line:
@@ -81,6 +86,7 @@ This runs the solver using the A* algorithm with search trace dumping enabled.
     IDS: Gradually increases depth limits.
     Greedy Search: Prioritizes nodes based on a heuristic.
     A*: Combines path cost and heuristic for optimal results.
+
 
 ## Input File Format
 
