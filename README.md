@@ -1,4 +1,4 @@
-# AI-Driven Expense Puzzle Solver
+# AI-Driven Expense 8 Puzzle Solver
 
 ## Project Overview
 
