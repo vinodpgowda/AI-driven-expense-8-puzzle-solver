@@ -1,83 +1,93 @@
-# Expense 8 Puzzle Solver
+# AI-Driven Expense Puzzle Solver
 
 ## Project Overview
 
-This project implements a solver for a modified version of the classic 8-puzzle problem, called the Expense 8 Puzzle problem. In this version, the number on each tile represents the cost of moving that tile. The solver supports multiple search algorithms to find the optimal solution to reach the desired configuration of the puzzle.
+This project implements a solver for a modified version of the 8-puzzle problem, called the **Expense 8 Puzzle**. Each tile’s number represents the cost of moving it, and the objective is to find the sequence of moves to reach the goal state at the minimum cost.
 
-The supported search methods include:
+The solver leverages **AI search algorithms** to efficiently explore the state space and supports multiple methods, including **uninformed** and **informed search techniques**.
+
+Supported search methods:
 - **Breadth-First Search (BFS)**
 - **Uniform Cost Search (UCS)**
-- **Depth-First Search (DFS)** 
-- **Depth-Limited Search (DLS)** 
-- **Iterative Deepening Search (IDS)** 
+- **Depth-First Search (DFS)**
+- **Depth-Limited Search (DLS)**
+- **Iterative Deepening Search (IDS)**
 - **Greedy Search**
-- **A\*** (default option if no method is provided)
+- **A\*** (default option)
 
-The project is built using **Java** and **Maven** and can be developed using **IntelliJ IDEA**.
+## Key Features
+
+- Implements foundational **AI search algorithms** for problem-solving.
+- Utilizes heuristics to improve efficiency in Greedy and A* searches.
+- Tracks search performance, including nodes expanded and fringe size.
+- Modular design, supporting future algorithm extensions.
 
 ## Project Structure
 
-The project follows a standard Maven structure.
+The project follows a standard Maven structure:
+- `src/main/java`: Contains implementation classes for algorithms and utilities.
+- `src/test/java`: Includes unit tests using **JUnit**.
 
 ### Technologies Used
-
-- **Java**
-- **Maven**: For dependency management and building the project.
-- **JUnit**: For testing.
+- **Java**: Core language for implementation.
+- **Maven**: For dependency management.
+- **JUnit**: For testing and validation.
 
 ## Installation and Setup
 
 ### Prerequisites
-
-- [Java JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) (version 8 or above)
+- [Java JDK 8+](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 - [Maven](https://maven.apache.org/download.cgi)
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/download/)
 
 ### Steps
-
-1. **Clone the repository**:
+1. Clone the repository:
     ```bash
     git clone https://github.com/your-username/expense-8-puzzle.git
     cd expense-8-puzzle
     ```
 
-2. **Open the project in IntelliJ IDEA**:
-    - Open IntelliJ IDEA and click on `File > Open`.
-    - Select the `expense-8-puzzle` directory and open it.
+2. Open in IntelliJ IDEA:
+    - Open IntelliJ and navigate to `File > Open`.
+    - Select the project directory.
 
-3. **Set up Maven**:
-    - IntelliJ IDEA should automatically detect the `pom.xml` file and set up Maven dependencies.
-    - If needed, reload Maven by clicking the `Maven` tab and selecting `Reload All Maven Projects`.
+3. Build with Maven:
+    - IntelliJ will detect the `pom.xml` and set up dependencies.
+    - If needed, reload Maven projects using the Maven tab.
 
-4. **Run the Project**:
-    - You can now run the solver by invoking the main class `Expense8PuzzleSolver` and providing the appropriate arguments.
+4. Run the solver:
+    - Execute the `Expense8PuzzleSolver` class with appropriate arguments.
 
 ## Usage
 
-The program is executed from the command line. The format is as follows:
-
+Run the solver from the command line:
 ```bash
 java -jar expense-8-puzzle.jar <start-file> <goal-file> <method> <dump-flag>
 ```
 
+Example:
+```bash
+java -jar expense-8-puzzle.jar start.txt goal.txt a* true
+```
+This runs the solver using the A* algorithm with search trace dumping enabled.  
+
+  
 ## Search Methods
 
-Each search method is implemented in its own class. Below is a brief description of each:
+    BFS: Explores all nodes at the current depth before moving deeper.
+    UCS: Explores the lowest-cost path first.
+    DFS: Explores as far as possible before backtracking.
+    DLS: DFS with a depth limit.
+    IDS: Gradually increases depth limits.
+    Greedy Search: Prioritizes nodes based on a heuristic.
+    A*: Combines path cost and heuristic for optimal results.
 
-- **Breadth-First Search (BFS)**: Explores all nodes at the present depth level before moving on to the next level.
-- **Uniform Cost Search (UCS)**: A priority queue-based search where the lowest cost path is explored first.
-- **Depth-First Search (DFS)**: Explores as far as possible along each branch before backtracking.
-- **Depth-Limited Search (DLS)**: Similar to DFS but limits the depth to a specified value.
-- **Iterative Deepening Search (IDS)**: A combination of depth-first and breadth-first, increasing the depth limit progressively.
-- **Greedy Search**: Chooses the next node based on a heuristic.
-- **A\***: Chooses the next node based on both the cost so far and a heuristic.
+## Input File Format
 
-## File Format
-
-The start and goal files should be plain text files following the format:
-
+The start and goal files are plain text with a 3x3 grid:
+```bash
 1 2 3  
 4 5 6  
-7 8 0  
-
-Where `0` represents the empty space.
+7 8 0
+```
+Where 0 represents the empty space.
