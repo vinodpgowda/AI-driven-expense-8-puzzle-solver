@@ -2,113 +2,70 @@ package com.vinod.expense8puzzle.solver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+
+import com.vinod.expense8puzzle.models.Grid;
 import com.vinod.expense8puzzle.models.PuzzleState;
-import static com.vinod.expense8puzzle.utils.StateUtils.getEmptyTileLocation;
-import static com.vinod.expense8puzzle.utils.StateUtils.getValidMoves;
-import static com.vinod.expense8puzzle.utils.StateUtils.deepCopy;
 
 public abstract class PuzzleSolver {
 
-    protected PuzzleState startPuzzleState;
-    protected int[][] goalState;
+    protected PuzzleState startState;
+    protected Grid goal;
+    protected PuzzleState solutionState;
     protected int nodesPopped;
     protected int nodesExpanded;
     protected int nodesGenerated;
-
-    // Maintain a Set to keep track of serialized visited states
-    Set<String> visitedStates = new HashSet<>();
+    protected int maxFringeSize;
+    protected Set<String> visitedStates = new HashSet<>();
 
     // PuzzleSolver Constructor - takes start state, goal state
-    public PuzzleSolver(int[][] startState, int[][] goalState){
-        this.startPuzzleState = new PuzzleState(startState, 0, 0);
-        this.goalState = goalState;
+    public PuzzleSolver(PuzzleState startState, Grid goal){
+        this.startState = startState;
+        this.goal = goal;
+        this.nodesPopped = 0;
+        this.nodesExpanded = 0;
+        this.nodesGenerated = 0;
     }
 
     //  Abstract solve() method specific for each subclass
-    //      goes through the Fringe, and check if the current state is the goal state or not
-    //      if not, explore its neighbours and add to the fringe
-    //      continues checking until goal reached (success) or fringe is empty(failure)
     public abstract void solve();
 
-
     // Check if the current state is the goal state (goal reached?)
-    public boolean isGoalReached(int[][] currentState){
-        return Arrays.deepEquals(currentState, goalState);
+    public boolean isGoalReached(PuzzleState currentState){
+        return Arrays.deepEquals(currentState.grid().toArray(), goal.toArray());
     }
 
-    // Expand current unexplored state
-    public void expandState(PuzzleState currentPuzzleState) {
-        int[][] currentState = currentPuzzleState.getState();
+    // implement generate
+    public List<PuzzleState> generateSuccessors(PuzzleState currentState) {
 
-        // 1: Locate the position of the empty tile
-        int[] emptyTilePosition = getEmptyTileLocation(currentState);
+        List<PuzzleState> successors = new ArrayList<>();
 
-        // 2: Determine valid moves - Up, Right, Down, Left
-        List<String> validMoves = getValidMoves(emptyTilePosition);
+        Grid currentGrid = currentState.grid();
+        int[] emptyTilePosition = currentGrid.getEmptyTileLocation();
 
-        // 3: Generate neighboring states with metadata
-        List<PuzzleState> successorStates = generateSuccessorStates(currentPuzzleState, emptyTilePosition, validMoves);
+        for (Move move : Move.values()) {
+            int[] targetTilePosition = move.getTargetPosition(emptyTilePosition);
 
-        // 4: Add generated states to the fringe
-        this.addToFringe(successorStates);
-    }
-
-    // Generate successor/neighbour states for current unexplored state
-    public static List<PuzzleState> generateSuccessorStates(PuzzleState currentPuzzleState, int[] emptyTilePosition, List<String> validMoves){
-
-        List<PuzzleState>successorStates = new ArrayList<>();
-
-        int i = emptyTilePosition[0];
-        int j = emptyTilePosition[1];
-
-        int[][] currentState = currentPuzzleState.getState();
-        int depth = currentPuzzleState.getDepth();
-        int cost = currentPuzzleState.getCost();
-
-        for (String move : validMoves){
-            int[][] newState = deepCopy(currentState);
-            switch (move) {
-                case "Up" -> {
-                    newState[i][j] = currentState[i-1][j];
-                    newState[i-1][j] = 0;
-                }
-                case "Right" -> {
-                    newState[i][j] = currentState[i][j+1];
-                    newState[i][j+1] = 0;
-                }
-                case "Down" -> {
-                    newState[i][j] = currentState[i+1][j];
-                    newState[i+1][j] = 0;
-                }
-                case "Left" -> {
-                    newState[i][j] = currentState[i][j-1];
-                    newState[i][j-1] = 0;
-                }
+            if (Grid.isInBounds(targetTilePosition)) {
+                Grid newGrid = currentGrid.swap(emptyTilePosition, targetTilePosition);
+                String newPath = currentState.path() + "\nMove " + currentGrid.get(targetTilePosition) + " " + move.getLabel();
+                PuzzleState nextState = new PuzzleState(newGrid, currentState.cost() + currentGrid.get(targetTilePosition), currentState.depth() + 1, newPath);
+                successors.add(nextState);
             }
-
-            List<String> newPath = new ArrayList<>(currentPuzzleState.getPath());
-            newPath.add(move);
-            successorStates.add(new PuzzleState(newState, depth + 1, cost+newState[i][j], newPath));
         }
-        return successorStates;
+        return successors;
     }
 
-    // 8: Abstract method to accommodate adding states to different type of fringe data structure
-    public abstract void addToFringe(List<PuzzleState> successorStates);
-
-    // Return results together
-    public Map<String, Integer> getResults(){
-        Map<String, Integer> results = new HashMap<>();
-        results.put("Nodes Popped", nodesPopped);
-        results.put("Nodes Expanded", nodesExpanded);
-        results.put("Nodes Generated", nodesGenerated);
-
-        return results;
+    @Override
+    public String toString() {
+        return "\nNodes Popped: " + nodesPopped + "\n" +
+                "Nodes Expanded: " + nodesExpanded + "\n" +
+                "Nodes Generated: " + nodesGenerated + "\n" +
+                "Max Fringe Size: " + maxFringeSize + "\n" +
+                "Solution found at depth " + solutionState.depth() + " with cost of " + solutionState.cost() + ".\n" +
+                "\nSteps: " + solutionState.path();
     }
 }
 

@@ -1,76 +1,63 @@
 package com.vinod.expense8puzzle.solver;
 
+import com.vinod.expense8puzzle.models.Grid;
 import com.vinod.expense8puzzle.models.PuzzleState;
+
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.List;
-import static com.vinod.expense8puzzle.utils.StateUtils.serializeState;
 
 public class BFSSolver extends PuzzleSolver{
 
-    // Queue fringe for BFS -> traversal level wise, breadth wise
-    private Queue<PuzzleState> fringe;
+    protected Queue<PuzzleState> fringe = new LinkedList<>();
 
-    // constructor, call super class constructor for states and initialize fringe
-    public BFSSolver(int[][] startState, int[][] goalState){
-        super(startState, goalState);
-        this.fringe = new LinkedList<>();
-        this.fringe.add(startPuzzleState);
+    public BFSSolver(PuzzleState startState, Grid goal) {
+        super(startState, goal);
+        fringe.add(startState);
     }
 
     // Implement abstract method solve()
-    // goes through the Fringe, and check if the current state is the goal state or not
-    // if not, explore its neighbours and add to the fringe
-    // continues checking until goal reached (success) or fringe is empty(failure)
-
     @Override
-    public void solve(){
+    public void solve() {
+        System.out.println("Solving Puzzle using Breadth First Search Algorithm");
 
-        while(!fringe.isEmpty()){
+        // Step 1: Keep searching until Fringe is empty
+        while (!fringe.isEmpty()) {
 
-            // Pop the current state from the fringe
-            PuzzleState currentPuzzleState = fringe.poll();
+            // Check for max fringe size
+            maxFringeSize = Math.max(fringe.size(), maxFringeSize);
 
-            // Increment nodesPopped counter
+            // Pop the current state and check if goal is reached
+            PuzzleState currentState = fringe.poll();
+
+            // increment nodes popped
             nodesPopped++;
 
-            // Check if current Puzzle State is the goal state
-            if (isGoalReached(currentPuzzleState.getState())){
+            // If goal, return
+            if (isGoalReached(currentState)){
 
-                // Yes -> goal reached - End of while loop
-                System.out.println("The goal has reached at the depth "
-                        + currentPuzzleState.getDepth() + " with cost " + currentPuzzleState.getCost());
-                System.out.println(currentPuzzleState.getPath());
+                solutionState = currentState;
+                System.out.println(this);
                 return;
-
-            } else { // If goal is not reached
-
-                // serialize the 2d array state to string for better comparison
-                String serializedCurrentState = serializeState(currentPuzzleState.getState());
-
-                // Check if current serialized state is unexplored - not in the visitedStates set
-                if (!visitedStates.contains(serializedCurrentState)){
-
-                    // Not visited -> add current serialized state to the visitedStates
-                    visitedStates.add(serializedCurrentState);
-
-                    // Expand current state and add its neighbours to Fringe
-                    expandState(currentPuzzleState);
-
-                    // Increment the nodes expanded counter
-                    nodesExpanded++;
-                }
             }
-            // If no states left in the fringe - no solution, end of solve()
+
+            // If goal is not reached, check if it has been explored or not
+            if (visitedStates.add(Arrays.deepToString(currentState.grid().toArray()))) {
+
+                // increment nodes expanded
+                nodesExpanded++;
+
+                // if not explored, expand it and get successor states
+                List<PuzzleState> successorStates = generateSuccessors(currentState);
+
+                // increment nodes generated
+                nodesGenerated += successorStates.size();
+
+                // add the successor states to the queue
+                fringe.addAll(successorStates);
+            }
         }
-    }
-
-    @Override
-    public void addToFringe(List<PuzzleState> successorStates){
-
-        // Increment the nodes generated counter by number of successor states
-        nodesGenerated += successorStates.size();
-        fringe.addAll(successorStates);
     }
 }
 
