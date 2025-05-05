@@ -1,99 +1,93 @@
-# AI-Driven Expense 8 Puzzle Solver
+# Java 8 Puzzle Solver
 
-## Project Overview
+**AI-powered expense 8-puzzle problem solver using modern Java.**  
+Implements classic search algorithms like **BFS**, **DFS**, **UCS**, and **A\*** with clean code, modular design, and extensibility.
 
-This project implements a solver for a modified version of the 8-puzzle problem, called the **Expense 8 Puzzle**. Each tile’s number represents the cost of moving it, and the objective is to find the sequence of moves to reach the goal state at the minimum cost.
+---
 
-The solver leverages **AI search algorithms** to efficiently explore the state space and supports multiple methods, including **uninformed** and **informed search techniques**.
+## What This Project Does
 
+This Java application solves the **expense 8 puzzle problem**, where each tile has a cost equal to its number. It finds the optimal path from a given start state to a goal state using search algorithms.
 
-## Key Features
+---
 
-- Implements foundational **AI search algorithms** for problem-solving.
-- Utilizes heuristics to improve efficiency in Greedy and A* searches.
-- Tracks search performance, including nodes expanded and fringe size.
-- Modular design, supporting future algorithm extensions.
+## 💡 Why It’s Useful
 
+- A hands-on learning tool to understand uninformed and informed search strategies.
+- Great for showcasing your knowledge of **Java**, **AI search algorithms**, **clean code**, and **test-driven development**.
+- Demonstrates practical use of `record`, `enum`, `Streams`, and other modern Java features.
 
-## Supported search methods:
-- **Breadth-First Search (BFS)** : Explores all nodes at the current depth before moving deeper.
-- **Uniform Cost Search (UCS)** : Explores the lowest-cost path first.
-- **Depth-First Search (DFS)** : Explores as far as possible before backtracking.
-- **Depth-Limited Search (DLS)** : DFS with a depth limit.
-- **Iterative Deepening Search (IDS)** : Gradually increases depth limits.
-- **Greedy Search** : Prioritizes nodes based on a heuristic.
-- **A\*** (default option) : Combines path cost and heuristic for optimal results.  
+---
 
-    
-## Project Structure
+## 🛠️ How to Get Started
 
-The project follows a standard Maven structure:
-- `src/main/java`: Contains implementation classes for algorithms and utilities.
-- `src/test/java`: Includes unit tests using **JUnit**.
+### ✅ Prerequisites
 
-### Technologies Used
-- **Java**: Core language for implementation.
-- **Maven**: For dependency management.
-- **JUnit**: For testing and validation.
+- Java 17+
+- Maven 3+
+- Git
+- IntelliJ IDEA (optional)
 
+### 📦 Installation
 
-## Installation and Setup
-
-### Prerequisites
-- [Java JDK 8+](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
-- [Maven](https://maven.apache.org/download.cgi)
-- [IntelliJ IDEA](https://www.jetbrains.com/idea/download/)
-
-### Steps
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/vinodpgowda/AI-driven-expense-8-puzzle.git
-    cd AI-driven-expense-8-puzzle
-    ```
-
-2. Open in IntelliJ IDEA:
-    - Open IntelliJ and navigate to `File > Open`.
-    - Select the project directory.
-
-3. Build with Maven:
-    - IntelliJ will detect the `pom.xml` and set up dependencies.
-    - If needed, reload Maven projects using the Maven tab.
-
-4. Run the solver:
-    - Execute the `Expense8PuzzleSolver` class with appropriate arguments.
-
-
-## Usage
-
-Run the solver from the command line:
 ```bash
-java -jar expense-8-puzzle.jar <start-file> <goal-file> <method> <dump-flag>
+git clone https://github.com/vinodpgowda/java-8-puzzle-solver.git
+cd java-8-puzzle-solver
+mvn clean install
 ```
 
-Example:
+### ▶️ Running the Solver
+
 ```bash
-java -jar expense-8-puzzle.jar start.txt goal.txt a* true
+java -jar target/expense-8-puzzle.jar start.txt goal.txt BFS
 ```
-This runs the solver using the A* algorithm with search trace dumping enabled.  
 
-  
-## Search Methods
+Replace `start.txt`, `goal.txt`, and `BFS` with your own input files and algorithm (`DFS`, `UCS`, `A*`, etc.).  
+If no algorithm is provided or an invalid one is specified, the solver defaults to `BFS`.
 
-    BFS: Explores all nodes at the current depth before moving deeper.
-    UCS: Explores the lowest-cost path first.
-    DFS: Explores as far as possible before backtracking.
-    DLS: DFS with a depth limit.
-    IDS: Gradually increases depth limits.
-    Greedy Search: Prioritizes nodes based on a heuristic.
-    A*: Combines path cost and heuristic for optimal results.
+---
 
+## 📂 Input File Format
 
-## Input File Format
+Plain text file with a 3x3 grid. `0` represents the empty tile.
 
-The start and goal files are plain text with a 3x3 grid:
-```bash
-1 2 3  
-4 5 6  
+```
+1 2 3
+4 5 6
 7 8 0
 ```
-Where 0 represents the empty space.
+
+You need two files: one for the **start state**, one for the **goal**.
+
+---
+
+## 🤖 Supported Search Algorithms
+
+- **BFS** – Breadth-First Search  
+- **DFS** – Depth-First Search  
+- **UCS** – Uniform Cost Search  
+- **A\*** – Heuristic-based search *(coming soon)*  
+- (Extensible to IDS, DLS, Greedy, etc.)
+
+---
+
+## 🧪 Running Tests
+
+```bash
+mvn test
+```
+
+- Tests located in `src/test/java`
+- Built with **JUnit 5**
+- Covers input parsing, state validation, and algorithm correctness
+
+---
+
+## 🤝 Maintainer
+
+Developed by [Vinod Kumar](https://github.com/vinodpgowda)  
+For questions, open an issue or reach me via [LinkedIn](https://www.linkedin.com/in/vinodpgowda/)
+
+---
+
+
